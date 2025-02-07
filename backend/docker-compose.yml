@@ -1,0 +1,18 @@
+services:
+  lated:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "5001:5001"
+    environment:
+      PORT: "${PORT}"
+      USERNAME: "${USERNAME}"
+      PASSWORD: "${PASSWORD}"
+    networks:
+      - alice
+
+networks:
+  alice: {}
