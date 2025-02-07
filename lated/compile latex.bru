@@ -1,0 +1,20 @@
+meta {
+  name: compile latex
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5001/compile
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: 
+  password: 
+}
+
+body:form-urlencoded {
+  content: \documentclass{article}\begin{document}Hello, World!\end{document}
+}
