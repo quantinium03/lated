@@ -25,9 +25,15 @@ function App() {
             const formData = new URLSearchParams();
             formData.append('content', latexContent);
 
-            const response = await fetch("http://localhost:5001/compile", {
+            console.log(import.meta.env.USERNAME)
+            console.log(import.meta.env.PASSWORD)
+            const credentials = `quantinium:${btoa("")}`
+            const response = await fetch("http://lated.quantinium.dev/compile", {
                 method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                headers: {
+                    "Authorization": `Basic ${credentials}`,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
                 body: formData.toString()
             });
 
@@ -71,9 +77,8 @@ function App() {
                     />
                     <div className="p-4 border-t">
                         <button
-                            className={`w-full py-2 text-white rounded ${
-                                isCompiling ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-                            }`}
+                            className={`w-full py-2 text-white rounded ${isCompiling ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                                }`}
                             onClick={compileLatex}
                             disabled={isCompiling}
                         >
