@@ -25,7 +25,7 @@ function App() {
             const formData = new URLSearchParams();
             formData.append('content', latexContent);
 
-            const credentials = btoa(`${import.meta.env.USERNAME}:${import.meta.env.PASSWORD}`);
+            const credentials = btoa(`${import.meta.env.VITE_USERNAME}:${import.meta.env.VITE_PASSWORD}`);
             formData.append("key", "value");
 
             const response = await fetch("https://lated.quantinium.dev/compile", {
