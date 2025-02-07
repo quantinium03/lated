@@ -6,15 +6,15 @@ function App() {
     const [latexContent, setLatexContent] = useState(
         "\\documentclass{article}\n\\begin{document}\nHello World\n\\end{document}"
     );
-    const [pdfUrl, setPdfUrl] = useState(null);
+    const [pdfUrl, setPdfUrl] = useState("");
     const [isCompiling, setIsCompiling] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<null | string>(null);
 
     useEffect(() => {
         return () => {
             if (pdfUrl) URL.revokeObjectURL(pdfUrl);
         };
-    }, []);
+    }, [pdfUrl]);
 
     const compileLatex = async () => {
         try {
@@ -47,9 +47,9 @@ function App() {
 
             setPdfUrl(URL.createObjectURL(pdfBlob));
             setError(null);
-        } catch (error) {
-            setPdfUrl(null);
-            setError(error.message);
+        } catch (error: any) {
+            setPdfUrl("");
+            setError(error instanceof Error ? error.message : String(error));
         } finally {
             setIsCompiling(false);
         }
