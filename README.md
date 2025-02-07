@@ -1,0 +1,2 @@
+# lated
+latex editor
