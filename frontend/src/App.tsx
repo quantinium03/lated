@@ -25,10 +25,10 @@ function App() {
             const formData = new URLSearchParams();
             formData.append('content', latexContent);
 
-            console.log(import.meta.env.USERNAME)
-            console.log(import.meta.env.PASSWORD)
-            const credentials = `quantinium:${btoa("")}`
-            const response = await fetch("http://lated.quantinium.dev/compile", {
+            const credentials = btoa(`${import.meta.env.USERNAME}:${import.meta.env.PASSWORD}`);
+            formData.append("key", "value");
+
+            const response = await fetch("https://lated.quantinium.dev/compile", {
                 method: "POST",
                 headers: {
                     "Authorization": `Basic ${credentials}`,
