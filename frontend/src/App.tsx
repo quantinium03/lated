@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import Header from "./components/Header"
 import LatexEditor from "./components/LatexEditor"
 import PdfOutput from "./components/PdfOutput"
+import ToggleView from "./components/ToggleView";
 
 function App() {
     const [pdfUrl, setPdfUrl] = useState<string>("");
@@ -12,6 +13,7 @@ Hello, World!
 `);
     const [isCompiling, setIsCompiling] = useState(false);
     const [error, setError] = useState<string>("");
+    const [activeView, setActiveView] = useState<'editor' | 'output'>('editor');
 
     const handleCompile = async () => {
         setIsCompiling(true);
@@ -39,6 +41,7 @@ Hello, World!
             const pdfBlob = await response.blob();
             const pdfObjectUrl = URL.createObjectURL(pdfBlob);
             setPdfUrl(pdfObjectUrl);
+            setActiveView('output');
         } catch (error) {
             console.error('Error compiling LaTeX:', error);
             setError(error instanceof Error ? error.message : 'Failed to compile LaTeX');
@@ -56,12 +59,13 @@ Hello, World!
     }, [pdfUrl]);
 
     return (
-        <>
-            <div>
-                <Header />
+        <div className="flex flex-col h-screen">
+            <Header />
+            <div className="md:hidden">
+                <ToggleView activeView={activeView} setActiveView={setActiveView} />
             </div>
-            <div className="flex h-[100vh]">
-                <div className="flex-1">
+            <div className="flex flex-col md:flex-row flex-grow overflow-hidden">
+                <div className={`w-full md:w-1/2 h-full ${activeView === 'editor' ? 'block' : 'hidden md:block'}`}>
                     <LatexEditor
                         content={content}
                         onChange={setContent}
@@ -69,7 +73,7 @@ Hello, World!
                         isCompiling={isCompiling}
                     />
                 </div>
-                <div className="flex-1">
+                <div className={`w-full md:w-1/2 h-full ${activeView === 'output' ? 'block' : 'hidden md:block'}`}>
                     <PdfOutput
                         pdfUrl={pdfUrl}
                         isCompiling={isCompiling}
@@ -77,7 +81,7 @@ Hello, World!
                     />
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 
