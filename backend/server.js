@@ -14,7 +14,7 @@ const PORT = process.env.PORT
 app.use(cors())
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(basicAuth({
-    users: { 'quantinium': 'WWgkQ1YweWo4dCRDZUxZcw==' }
+    users: { [process.env.USERNAME]: process.env.PASSWORD }
 }))
 
 const outputDir = path.join(__dirname, "output")
