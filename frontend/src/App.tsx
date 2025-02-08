@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Editor } from "@monaco-editor/react";
-import { Loader2, FileDown, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Loader2, FileDown, AlertCircle, ChevronDown, ChevronUp, Eye } from 'lucide-react';
 
 function App() {
     const [latexContent, setLatexContent] = useState(
@@ -60,6 +60,12 @@ function App() {
         setIsEditorCollapsed(!isEditorCollapsed);
     };
 
+    // Generate Google Docs Viewer URL
+    const getGoogleDocsViewerUrl = () => {
+        if (!pdfUrl) return '';
+        return `https://docs.google.com/viewer?url=${encodeURIComponent(pdfUrl)}&embedded=true`;
+    };
+
     return (
         <div className="flex h-screen w-full flex-col bg-slate-50">
             <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
@@ -67,14 +73,25 @@ function App() {
                     <div className="flex items-center justify-between">
                         <h1 className="text-2xl font-bold">LaTeX Editor</h1>
                         {pdfUrl && (
-                            <a
-                                href={pdfUrl}
-                                download="document.pdf"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
-                            >
-                                <FileDown size={20} />
-                                <span className="hidden sm:inline">Download PDF</span>
-                            </a>
+                            <div className="flex gap-2">
+                                <a
+                                    href={pdfUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+                                >
+                                    <Eye size={20} />
+                                    <span className="hidden sm:inline">View PDF</span>
+                                </a>
+                                <a
+                                    href={pdfUrl}
+                                    download="document.pdf"
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+                                >
+                                    <FileDown size={20} />
+                                    <span className="hidden sm:inline">Download</span>
+                                </a>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -91,7 +108,7 @@ function App() {
                             {isEditorCollapsed ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
                         </button>
                     </div>
-
+                    
                     {!isEditorCollapsed && (
                         <>
                             <div className="flex-1">
@@ -114,8 +131,8 @@ function App() {
                             <div className="p-4 border-t border-slate-200 bg-white">
                                 <button
                                     className={`w-full py-2.5 px-4 rounded-lg font-medium transition-all
-                                        ${isCompiling
-                                            ? 'bg-blue-100 text-blue-600 cursor-not-allowed'
+                                        ${isCompiling 
+                                            ? 'bg-blue-100 text-blue-600 cursor-not-allowed' 
                                             : 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800'
                                         }`}
                                     onClick={compileLatex}
@@ -126,7 +143,7 @@ function App() {
                                         {isCompiling ? 'Compiling...' : 'Compile LaTeX'}
                                     </div>
                                 </button>
-
+                                
                                 {error && (
                                     <div className="mt-3 p-3 flex items-start gap-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
                                         <AlertCircle size={18} className="mt-0.5 flex-shrink-0" />
@@ -140,10 +157,10 @@ function App() {
 
                 <div className="w-full md:w-1/2 flex-1 bg-slate-100">
                     {pdfUrl ? (
-                        <embed
-                            src={pdfUrl}
-                            type="application/pdf"
-                            className="w-full h-full"
+                        <iframe
+                            src={getGoogleDocsViewerUrl()}
+                            className="w-full h-full border-0"
+                            title="PDF Preview"
                         />
                     ) : (
                         <div className="flex flex-col items-center justify-center h-full text-slate-500 p-4 text-center">
