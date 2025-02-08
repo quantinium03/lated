@@ -1,4 +1,4 @@
-import CodeMirror, { Extension } from "@uiw/react-codemirror"
+import CodeMirror, { EditorView, Extension } from "@uiw/react-codemirror"
 import { StreamLanguage } from "@codemirror/language"
 import { stex } from "@codemirror/legacy-modes/mode/stex"
 import { ArrowsClockwise } from "@phosphor-icons/react"
@@ -19,9 +19,9 @@ function LatexEditor({ content, onChange, onCompile, isCompiling }: LatexEditorP
 
     useEffect(() => {
         if (isVimMode === 1) {
-            setExtension([StreamLanguage.define(stex), vim()])
+            setExtension([StreamLanguage.define(stex), vim(), EditorView.lineWrapping])
         } else {
-            setExtension([StreamLanguage.define(stex)])
+            setExtension([StreamLanguage.define(stex),EditorView.lineWrapping])
         }
     }, [isVimMode])
 
@@ -56,11 +56,12 @@ function LatexEditor({ content, onChange, onCompile, isCompiling }: LatexEditorP
                 className="text-sm md:text-base flex-grow overflow-auto"
                 basicSetup={{
                     lineNumbers: true,
+                    history:true,
                     bracketMatching: true,
                     closeBrackets: true,
                     syntaxHighlighting: true,
                     autocompletion: true,
-
+                    foldGutter:true,
                 }}
                 indentWithTab={true}
             />
