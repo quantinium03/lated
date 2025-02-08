@@ -12,15 +12,9 @@
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
     "@tailwindcss/vite": "^4.0.4",
-    "better-react-mathjax": "^2.1.0",
-    "hyphenation.en-us": "^0.2.1",
-    "katex": "^0.16.21",
-    "latex.css": "link:latex.js/dist/latex.css",
-    "latex.js": "^0.12.6",
+    "lucide-react": "^0.475.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-latex-next": "^3.0.0",
-    "split-grid": "^1.0.11",
     "tailwindcss": "^4.0.4"
   },
   "devDependencies": {
